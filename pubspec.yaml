@@ -1,0 +1,22 @@
+name: mega_ai
+description: MEGA AI ULTIMATE for Shyam
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  speech_to_text: ^6.5.1
+  flutter_tts: ^4.0.2
+  permission_handler: ^11.3.1
+  url_launcher: ^6.2.5
+  battery_plus: ^6.0.0
+  torch_light: ^1.0.0
+  device_apps: ^2.2.0
+  open_settings_plus: ^0.1.4
+  image_picker: ^1.0.7
+  image: ^4.1.7
+  http: ^1.2.0
+flutter:
+  uses-material-design: true
