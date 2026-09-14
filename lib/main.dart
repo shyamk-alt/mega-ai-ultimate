@@ -1,26 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:speech_to_text/speech_to_text.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:torch_light/torch_light.dart';
-import 'package:device_apps/device_apps.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io'; import 'dart:math'; import 'dart:typed_data';
-import 'package:image/image.dart' as img;
-import 'package:http/http.dart' as http; import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-// YOUR GEMINI KEY - PASTED FROM YOUR PHOTO
-const String GEMINI_API_KEY = "AIzaSyAb8RN6JRaP6BId6QY3ZelwK1fABnKbMh5WNIkwEB1s5vu6i4Ew";
+const String GEMINI_API_KEY = "";
 
-void main() => runApp(MaterialApp(debugShowCheckedModeBanner:false, home: Mega()));
-class Mega extends StatefulWidget { @override State<Mega> createState()=>_MegaState();}
-class _MegaState extends State<Mega> with TickerProviderStateMixin{
-  final SpeechToText _speech=SpeechToText(); final FlutterTts _tts=FlutterTts();
-  bool isActive=false, isListening=false, isEditing=false, isThinking=false;
-  String status="MEGA AI is OFF"; late AnimationController _orb,_wave,_pulse;
-  File? editImage; Uint8List? editedBytes; double brightness=0;
-  @override void initState(){super.initState(); _orb=AnimationController(vsync:this,duration:Duration(seconds:3))..repeat(); _wave=AnimationController(vsync:this,duration:Duration(milliseconds:700))..repeat(reverse:true); _pulse=AnimationController(vsync:this,duration:Duration(seconds:1))..repeat(reverse:true);}
-  Future<void> toggle() async{if(!isActive){await [Permission.microphone,Permission.speech].request(); await _speech.initialize(); await _tts.setLanguage("en-US"); await _tts.setSpeechRate(0.48); setState(()=>isActive=true); speak("Mega Ultimate Activated for Shyam. One button is ON. Say open Instagram or ask anything.");} else {await _speech.stop(); await _tts.stop(); setState(()=>{isActive=false,isListening=false,status="MEGA AI is OFF"});}}
-  Future<void> speak(String m) async{setState(()=>status=m); await _tts.speak(m);}
-  void startVoice() async{if(!isActive) return; setState(()=>isListening=true); _speech.listen(onResult:(r){if(r.finalResult) stopVoice(r.recognizedWords
+void main() => runApp(MegaAIApp());
+
+class MegaAIApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MegaHome(),
+    );
+  }
+}
+
+class MegaHome extends StatefulWidget {
+  @override
+  _MegaHomeState createState() => _MegaHomeState();
+}
+
+class _MegaHomeState extends State<MegaHome> {
+  stt.SpeechToText _speech = stt.SpeechToText();
+  FlutterTts _tts = FlutterTts();
+  String text = "Say Hey MEGA";
+  bool isListening = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _tts.setLanguage("en-US");
+    _tts.setSpeechRate(0.5);
+  }
+
+  void _speak(String msg) async {
+    await _tts.speak(msg);
+  }
+
+  void _listen() async {
+    bool available = await _speech.initialize();
+    if (available) {
+      setState(() => isListening = true);
+      _speech.listen(onResult: (result) {
+        setState(() {
+          text = result.recognizedWords;
+          if (text.toLowerCase().contains("hey mega") || text.toLowerCase().contains("hey mega ai")) {
+            _speak("Hello, I'm MEGA AI, how can I help you?");
+          }
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(title: Text("MEGA AI Ultimate"), backgroundColor: Colors.purple),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.mic, size: 100, color: isListening ? Colors.green : Colors.white),
+            SizedBox(height: 20),
+            Text(text, style: TextStyle(color: Colors.white, fontSize: 22), textAlign: TextAlign.center),
+            SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _listen,
+              child: Text("Tap & Say Hey MEGA"),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, padding: EdgeInsets.all(20)),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
