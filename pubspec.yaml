@@ -1,5 +1,5 @@
 name: mega_ai
-description: MEGA AI ULTIMATE for Shyam
+description: MEGA AI Ultimate Assistant
 publish_to: 'none'
 version: 1.0.0+1
 environment:
@@ -7,16 +7,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.2.0
   speech_to_text: ^6.5.1
   flutter_tts: ^4.0.2
-  permission_handler: ^11.3.1
   url_launcher: ^6.2.5
-  battery_plus: ^6.0.0
-  torch_light: ^1.0.0
-  device_apps: ^2.2.0
-  open_settings_plus: ^0.1.4
-  image_picker: ^1.0.7
-  image: ^4.1.7
-  http: ^1.2.0
+  cupertino_icons: ^1.0.6
 flutter:
   uses-material-design: true
