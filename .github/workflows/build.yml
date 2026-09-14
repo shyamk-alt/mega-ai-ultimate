@@ -8,12 +8,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-      - run: |
-          mv lib/main.dart /tmp/mega_main.dart
-          mv pubspec.yaml /tmp/mega_pub.yaml
-               flutter create . --platforms=android --project-name mega_ai --overwrite
-          mv /tmp/mega_main.dart lib/main.dart
-          mv /tmp/mega_pub.yaml pubspec.yaml
+      - run: flutter create . --platforms=android --project-name mega_ai --overwrite
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
