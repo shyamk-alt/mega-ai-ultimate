@@ -8,7 +8,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-      - run: flutter create . --platforms=android --project-name mega_ai --overwrite
+      - run: cp lib/main.dart /tmp/mega_main.dart
+      - run: flutter create. --platforms=android --project-name mega_ai --overwrite
+      - run: mv /tmp/mega_main.dart lib/main.dart
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
