@@ -9,7 +9,7 @@ jobs:
         with:
           flutter-version: '3.22.0'
       - run: cp lib/main.dart /tmp/mega_main.dart
-      - run: flutter create. --platforms=android --project-name mega_ai --overwrite
+      - run: flutter create . --platforms=android --overwrite
       - run: mv /tmp/mega_main.dart lib/main.dart
       - run: flutter pub get
       - run: flutter build apk --release
